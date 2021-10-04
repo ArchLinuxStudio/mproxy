@@ -1,4 +1,6 @@
-# mproxy 使用说明
+# mproxy
+
+mproxy is a lightweight http proxy. It is created by @examplecode, and now maintained by @ArchLinuxStudio.
 
 这是一个微型的http代理服务器实现,使用c语言实现，核心代码量不足500行,不依赖任何第三方的库(只能工作在unixlike系统下面).
 其主要功能如下：
@@ -68,30 +70,3 @@ mproxy可以运行在unix-like 的操作系统下面，程序很小没有第三�
 -l 指定本地监听端口
 -h 指定远端下一跳步的服务器地址及端口号，如果翻墙需要是一台国外的服务器
 -E 发送数据的时候进行加密，其对应参数'-D' 应用在远程代理
-
-
-#### step3 : 配置浏览器http代理使用mporxy本地代理
-
-设置你的浏览器http代理指向你的本地代理，使用chrome浏览器的同学强烈推荐使用
-[switchSharp](https://github.com/feliscatus/switchyomega)，安装完毕swichSharp以后只需要为switchSharp增加一个情景模式就好，如下图：
-
-![设置switchSharp](./switchSharp_config.png) 
-
-
-保存设置以后如果想翻墙的话就切换到你刚才配置的情景模式吧。
-
-![使用mproxy](./use_mproxy.png) 
-
-
-注： mproxy暂不支持windows用户，但是可以和已经部署好的机器共享，只需要在switchSharp中把代理服务器的地址从“localhost"改成已经部署好mproxy的ip即可。
-
-
-
-
-
-
-
-
-
-
-
