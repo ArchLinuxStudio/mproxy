@@ -1,9 +1,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
-#include <libgen.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <resolv.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,12 +10,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include <string.h>
-
 #define BUF_SIZE 8192
-
-#define READ 0
-#define WRITE 1
+#define MAX_HEADER_SIZE 8192
 
 #define DEFAULT_LOCAL_PORT 8080
 #define DEFAULT_REMOTE_PORT 8081
@@ -28,26 +22,14 @@
 #define CLIENT_SOCKET_ERROR -5
 #define CLIENT_RESOLVE_ERROR -6
 #define CLIENT_CONNECT_ERROR -7
-#define CREATE_PIPE_ERROR -8
-#define BROKEN_PIPE_ERROR -9
-#define HEADER_BUFFER_FULL -10
-#define BAD_HTTP_PROTOCOL -11
+#define HEADER_BUFFER_FULL -8
+#define BAD_HTTP_PROTOCOL -9
 
-#define MAX_HEADER_SIZE 8192
-
-#if defined(OS_ANDROID)
-#include <android/log.h>
-
-#define LOG(fmt...) __android_log_print(ANDROID_LOG_DEBUG, __FILE__, ##fmt)
-
-#else
-// TO BE FIXED COMPILE TIME
 #define LOG(fmt...)                                                            \
   do {                                                                         \
-    fprintf(stderr, "%s %s ", __DATE__, __TIME__);                             \
+    fprintf(stderr, "Compile time: %s %s ", __DATE__, __TIME__);               \
     fprintf(stderr, ##fmt);                                                    \
   } while (0)
-#endif
 
 char remote_host[128];
 int remote_port;
@@ -364,9 +346,8 @@ int read_header(int fd, void *buffer) {
 /* 处理客户端的连接 */
 void handle_client(int client_sock, struct sockaddr_in client_addr) {
   int is_http_tunnel = 0;
-  if (strlen(remote_host) ==
-      0) /* 未指定远端主机名称从http 请求 HOST 字段中获取 */
-  {
+  /* 未指定远端主机名称 从http请求 HOST 字段中获取 */
+  if (strlen(remote_host) == 0) {
 
 #ifdef DEBUG
     LOG(" ============ handle new client ============\n");
@@ -377,7 +358,6 @@ void handle_client(int client_sock, struct sockaddr_in client_addr) {
       LOG("Read Http header failed\n");
       return;
     } else {
-      printf("\n%s\n", header_buffer);
       char *p = strstr(header_buffer, "CONNECT"); /* 判断是否是http 隧道请求 */
       if (p) {
         LOG("receive CONNECT request\n");

@@ -42,7 +42,7 @@ The deployment steps are as follows:
 ./mproxy  -l 8081 -D -d
 ```
 
--D Specify to accept data for decryption, and its corresponding parameter'-E' is applied to the local agent
+-D Specify to accept data for decryption, and its corresponding parameter '-E' is applied to the local agent.
 
 ### step2 : Start mproxy locally as a local proxy, and specify the transmission method to encrypt
 
@@ -52,8 +52,8 @@ Start a mporxy locally and specify the server address and port number deployed r
 ./mproxy  -l 8080 -h xxx.xxx.xxx.xxx:8081 -E
 ```
 
--l Specify the local listening port
--h Specify the server address and port number of the remote next hop. If you need censorship circumvention, you need to designate a server that has not been censorship.
+-l Specify the local listening port  
+-h Specify the server address and port number of the remote next hop. If you need censorship circumvention, you need to designate a server that has not been censorship.  
 -E Encrypt when sending data
 
 ## Star History
